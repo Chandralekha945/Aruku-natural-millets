@@ -3,7 +3,7 @@ import whatsappIcon from "../assets/whatsappicon.jpg";
 export default function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/919550972999?text=Hi! I would like to know more about your products."
+      href="https://wa.me/9550972999?text=Hi! I would like to know more about your products."
       target="_blank"
       rel="noreferrer"
       style={{

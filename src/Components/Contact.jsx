@@ -2,7 +2,7 @@ import COLORS from "../theme";
 import { whatsappLink } from "../constants";
 
 const contactCards = [
-  { icon: "📞", title: "Phone / WhatsApp", detail: "+91 98765 43210" },
+  { icon: "📞", title: "Phone / WhatsApp", detail: "9550972999" },
   { icon: "📍", title: "Location", detail: "Andhra Pradesh, India" },
   { icon: "🕐", title: "Order Hours", detail: "9:00 AM – 8:00 PM (All Days)" },
 ];

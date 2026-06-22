@@ -176,7 +176,7 @@ export default function Footer({ setSection }) {
               }}
             >
               <a
-                href="https://wa.me/919550972999"
+                href="https://wa.me/9550972999"
                 target="_blank"
                 rel="noreferrer"
                 style={{ textDecoration: "none" }}

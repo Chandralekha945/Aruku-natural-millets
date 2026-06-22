@@ -10,7 +10,6 @@ const navItems = [
   { id: "contact", label: "Contact" },
 ];
 
-// Flatten all products with their category label
 const allProducts = categories.flatMap((cat) =>
   cat.products.map((p) => ({
     name: p.name,
@@ -31,16 +30,17 @@ export default function Navbar({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const searchRef = useRef(null);
 
-  // Suggestions: filter by name or category
-  const suggestions = searchTerm.trim().length > 0
-    ? allProducts.filter((p) =>
-        (p.name + " " + p.category)
-          .toLowerCase()
-          .includes(searchTerm.trim().toLowerCase())
-      ).slice(0, 8)
-    : [];
+  const suggestions =
+    searchTerm.trim().length > 0
+      ? allProducts
+          .filter((p) =>
+            (p.name + " " + p.category)
+              .toLowerCase()
+              .includes(searchTerm.trim().toLowerCase())
+          )
+          .slice(0, 8)
+      : [];
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -49,6 +49,15 @@ export default function Navbar({
     };
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  // Close menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) setMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleNav = (id) => {
@@ -60,6 +69,7 @@ export default function Navbar({
     setSearchTerm(e.target.value);
     setSection("products");
     setDropdownOpen(true);
+    setMenuOpen(false);
   };
 
   const handleSelect = (product) => {
@@ -74,74 +84,160 @@ export default function Navbar({
   };
 
   return (
-    <nav
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1000,
-        background: COLORS.primary,
-        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
-      }}
-    >
-      <div
+    <>
+      <style>{`
+        .navbar-inner {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+          height: 70px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .logo-text-main {
+          color: #fff;
+          font-weight: 800;
+          font-size: 20px;
+        }
+        .logo-tagline {
+          color: rgba(255,255,255,0.85);
+          font-size: 12px;
+        }
+        .desktop-nav {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+        }
+        .hamburger {
+          display: none;
+          background: transparent;
+          border: none;
+          color: #fff;
+          font-size: 26px;
+          cursor: pointer;
+          padding: 6px;
+          line-height: 1;
+        }
+        .mobile-menu {
+          display: none;
+          flex-direction: column;
+          background: #1e6e32;
+          padding: 10px 0;
+          border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-menu.open {
+          display: flex;
+        }
+        .mobile-menu button {
+          background: transparent;
+          border: none;
+          color: #fff;
+          padding: 14px 24px;
+          font-size: 15px;
+          font-weight: 500;
+          text-align: left;
+          cursor: pointer;
+          font-family: inherit;
+          border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .mobile-menu button:hover {
+          background: rgba(255,255,255,0.08);
+        }
+        .mobile-menu button.active {
+          font-weight: 700;
+          color: #a8f0b0;
+        }
+        .search-wrapper {
+          position: relative;
+          min-width: 240px;
+        }
+        @media (max-width: 768px) {
+          .navbar-inner {
+            height: 62px;
+            padding: 0 14px;
+          }
+          .logo-text-main {
+            font-size: 15px;
+          }
+          .logo-tagline {
+            display: none;
+          }
+          .desktop-nav {
+            display: none;
+          }
+          .hamburger {
+            display: block;
+          }
+          .search-wrapper {
+            min-width: 0;
+            flex: 1;
+            margin: 0 10px;
+          }
+        }
+        @media (max-width: 400px) {
+          .logo-text-main {
+            font-size: 13px;
+          }
+        }
+      `}</style>
+
+      <nav
         style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "0 20px",
-          height: "75px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+          background: COLORS.primary,
+          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
         }}
       >
-        {/* Logo */}
-        <div
-          onClick={() => handleNav("home")}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            cursor: "pointer",
-          }}
-        >
-          <img
-            src={logo}
-            alt="Aruku Natural"
+        <div className="navbar-inner">
+          {/* Logo */}
+          <div
+            onClick={() => handleNav("home")}
             style={{
-              width: "55px",
-              height: "55px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              background: "#fff",
-              padding: "2px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              cursor: "pointer",
+              flexShrink: 0,
             }}
-          />
-          <div>
-            <div style={{ color: "#fff", fontWeight: "800", fontSize: "20px" }}>
-              Aruku Natural Millets
-            </div>
-            <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "12px" }}>
-              Pure • Organic • Traditional
+          >
+            <img
+              src={logo}
+              alt="Aruku Natural"
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                background: "#fff",
+                padding: "2px",
+                flexShrink: 0,
+              }}
+            />
+            <div>
+              <div className="logo-text-main">Aruku Natural Millets</div>
+              <div className="logo-tagline">Pure • Organic • Traditional</div>
             </div>
           </div>
-        </div>
 
-        {/* Right Side */}
-        <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-
-          {/* Search Bar with Dropdown */}
-          <div ref={searchRef} style={{ position: "relative", minWidth: "240px" }}>
+          {/* Search Bar */}
+          <div className="search-wrapper" ref={searchRef}>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 background: "rgba(255,255,255,0.15)",
-                padding: "8px 14px",
-                borderRadius: dropdownOpen && suggestions.length > 0 ? "12px 12px 0 0" : "25px",
+                padding: "7px 12px",
+                borderRadius:
+                  dropdownOpen && suggestions.length > 0
+                    ? "12px 12px 0 0"
+                    : "25px",
                 transition: "border-radius 0.15s",
               }}
             >
-              <span style={{ color: "#fff", marginRight: "8px", fontSize: "16px" }}>
+              <span style={{ color: "#fff", marginRight: "7px", fontSize: "15px" }}>
                 🔍
               </span>
               <input
@@ -156,18 +252,17 @@ export default function Navbar({
                   background: "transparent",
                   color: "#fff",
                   width: "100%",
-                  fontSize: "14px",
+                  fontSize: "13px",
                 }}
               />
-              {/* Clear button */}
               {searchTerm && (
                 <span
                   onClick={handleClear}
                   style={{
                     color: "rgba(255,255,255,0.7)",
                     cursor: "pointer",
-                    fontSize: "16px",
-                    marginLeft: "6px",
+                    fontSize: "15px",
+                    marginLeft: "5px",
                     lineHeight: 1,
                   }}
                 >
@@ -201,13 +296,12 @@ export default function Navbar({
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
-                      padding: "10px 16px",
+                      padding: "10px 14px",
                       cursor: "pointer",
                       borderBottom:
                         i < suggestions.length - 1
                           ? "1px solid #f0f0f0"
                           : "none",
-                      transition: "background 0.15s",
                     }}
                     onMouseEnter={(e) =>
                       (e.currentTarget.style.background = "#f5fdf6")
@@ -216,46 +310,29 @@ export default function Navbar({
                       (e.currentTarget.style.background = "transparent")
                     }
                   >
-                    {/* Category icon bubble */}
                     <div
                       style={{
-                        width: "32px",
-                        height: "32px",
+                        width: "30px",
+                        height: "30px",
                         borderRadius: "50%",
                         background: "#F0FAF2",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: "15px",
+                        fontSize: "14px",
                         flexShrink: 0,
                       }}
                     >
                       {product.icon}
                     </div>
-
-                    {/* Name + category */}
                     <div>
-                      <div
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: 600,
-                          color: "#1a1a1a",
-                        }}
-                      >
+                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#1a1a1a" }}>
                         {product.name}
                       </div>
-                      <div
-                        style={{
-                          fontSize: "11px",
-                          color: product.color,
-                          fontWeight: 500,
-                        }}
-                      >
+                      <div style={{ fontSize: "11px", color: product.color, fontWeight: 500 }}>
                         {product.category}
                       </div>
                     </div>
-
-                    {/* Arrow hint */}
                     <div style={{ marginLeft: "auto", color: "#ccc", fontSize: "13px" }}>
                       →
                     </div>
@@ -264,54 +341,81 @@ export default function Navbar({
               </div>
             )}
 
-            {/* No results hint */}
-            {dropdownOpen && searchTerm.trim().length > 0 && suggestions.length === 0 && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  right: 0,
-                  background: "#fff",
-                  borderRadius: "0 0 14px 14px",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-                  zIndex: 2000,
-                  padding: "14px 16px",
-                  color: "#888",
-                  fontSize: "13px",
-                  textAlign: "center",
-                }}
-              >
-                No products match "{searchTerm}"
-              </div>
-            )}
+            {/* No results */}
+            {dropdownOpen &&
+              searchTerm.trim().length > 0 &&
+              suggestions.length === 0 && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    right: 0,
+                    background: "#fff",
+                    borderRadius: "0 0 14px 14px",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+                    zIndex: 2000,
+                    padding: "14px 16px",
+                    color: "#888",
+                    fontSize: "13px",
+                    textAlign: "center",
+                  }}
+                >
+                  No products match "{searchTerm}"
+                </div>
+              )}
           </div>
 
-          {/* Navigation */}
+          {/* Desktop Nav */}
+          <div className="desktop-nav">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNav(item.id)}
+                style={{
+                  background:
+                    activeSection === item.id
+                      ? "rgba(255,255,255,0.18)"
+                      : "transparent",
+                  border: "none",
+                  color: "#fff",
+                  padding: "8px 10px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: activeSection === item.id ? 700 : 500,
+                  fontSize: "14px",
+                  transition: "0.2s",
+                  fontFamily: "inherit",
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Hamburger (mobile only) */}
+          <button
+            className="hamburger"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Menu"
+          >
+            {menuOpen ? "✕" : "☰"}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
           {navItems.map((item) => (
             <button
               key={item.id}
+              className={activeSection === item.id ? "active" : ""}
               onClick={() => handleNav(item.id)}
-              style={{
-                background:
-                  activeSection === item.id
-                    ? "rgba(255,255,255,0.18)"
-                    : "transparent",
-                border: "none",
-                color: "#fff",
-                padding: "8px 14px",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontWeight: activeSection === item.id ? 700 : 500,
-                fontSize: "14px",
-                transition: "0.2s",
-              }}
             >
               {item.label}
             </button>
           ))}
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
