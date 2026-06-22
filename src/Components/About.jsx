@@ -1,176 +1,162 @@
 import COLORS from "../theme";
-
-import about1 from "../assets/store1.jpeg";
-import about2 from "../assets/store2.jpeg";
-import about3 from "../assets/store3.jpeg";
-
-const stats = [
-  { number: "50+", label: "Products" },
-  { number: "100%", label: "Organic" },
-  { number: "0", label: "Preservatives" },
-  { number: "∞", label: "Purity" },
-];
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 export default function About() {
+  const aboutImages = [
+    "/assets/store1.jpg",
+    "/assets/store2.jpg",
+    
+  ];
+
+  const branches = [
+    {
+      name: "Anakapalli Branch",
+      location: "Anakapalli, Andhra Pradesh",
+      note: "Main production unit for oils & millets",
+    },
+    {
+      name: "Visakhapatnam Branch",
+      location: "Visakhapatnam, Andhra Pradesh",
+      note: "Retail store for direct customers",
+    },
+  ];
+
   return (
     <section
       style={{
-        background: COLORS.primaryLight,
-        padding: "5rem 1.5rem",
+        padding: "clamp(2rem, 5vw, 4rem) 1rem",
+        background: COLORS.bg,
+        fontFamily: "Segoe UI, Arial",
       }}
     >
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-        }}
-      >
-        {/* Heading */}
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <h2
-            style={{
-              color: COLORS.primary,
-              fontSize: "2.5rem",
-              fontWeight: 800,
-              marginBottom: 10,
-            }}
-          >
-            About Araku Natural
-          </h2>
+      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
 
-          <p
-            style={{
-              maxWidth: 700,
-              margin: "0 auto",
-              color: COLORS.textMuted,
-              lineHeight: 1.8,
-            }}
-          >
-            Bringing pure cold-pressed oils, organic millets, spices, and
-            wellness products to families who value health and tradition.
-          </p>
-        </div>
-
-        {/* Photos */}
-        <div
+        {/* TITLE */}
+        <h2
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
-            gap: "20px",
-            marginBottom: "3rem",
+            fontSize: "clamp(1.6rem, 4vw, 2.4rem)",
+            marginBottom: "10px",
           }}
         >
-          <img
-            src={about1}
-            alt="Store Interior"
-            style={{
-              width: "100%",
-              height: "320px",
-              objectFit: "cover",
-              borderRadius: "16px",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-            }}
-          />
+          About Araku Natural Millets
+        </h2>
 
-          <img
-            src={about2}
-            alt="Products"
-            style={{
-              width: "100%",
-              height: "320px",
-              objectFit: "cover",
-              borderRadius: "16px",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-            }}
-          />
-
-          <img
-            src={about3}
-            alt="Araku Natural"
-            style={{
-              width: "100%",
-              height: "320px",
-              objectFit: "cover",
-              borderRadius: "16px",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-            }}
-          />
-        </div>
-
-        {/* Story */}
-        <div
+        <p
           style={{
-            background: "#fff",
-            borderRadius: "20px",
-            padding: "2rem",
-            boxShadow: "0 5px 20px rgba(0,0,0,0.08)",
+            color: "#666",
+            lineHeight: 1.8,
             marginBottom: "2rem",
+            fontSize: "clamp(13px, 2vw, 15px)",
           }}
         >
-          <h3
-            style={{
-              color: COLORS.primary,
-              marginBottom: "1rem",
-              fontSize: "1.8rem",
-            }}
+          We provide 100% natural, chemical-free, and traditionally processed
+          oils and millets directly from farmers to your home.
+        </p>
+
+        {/* CAROUSEL */}
+        <div style={{ marginBottom: "3rem" }}>
+          <Carousel
+            autoPlay
+            infiniteLoop
+            showThumbs={false}
+            showStatus={false}
+            interval={2500}
           >
-            Our Story
+            {aboutImages.map((img, i) => (
+              <div key={i}>
+                <img
+                  src={img}
+                  alt="about"
+                  style={{
+                    height: "clamp(200px, 50vw, 400px)",
+                    objectFit: "cover",
+                    borderRadius: "12px",
+                  }}
+                />
+              </div>
+            ))}
+          </Carousel>
+        </div>
+
+        {/* TRUST */}
+        <div style={{ marginBottom: "3rem" }}>
+          <h3 style={{ fontSize: "1.4rem" }}>⭐ Why Trust Us</h3>
+
+          <ul style={{ color: "#555", lineHeight: 2, fontSize: 14 }}>
+            <li>✔ 100% Natural Products</li>
+            <li>✔ Cold-Pressed Traditional Methods</li>
+            <li>✔ No Chemicals or Preservatives</li>
+            <li>✔ Fresh Farm-to-Home Supply</li>
+          </ul>
+        </div>
+
+        {/* RATINGS */}
+        <div style={{ marginBottom: "3rem" }}>
+          <h3 style={{ fontSize: "1.4rem" }}>
+            ⭐ Ratings & Reviews
           </h3>
 
-          <p
+          <div
             style={{
-              color: COLORS.textMuted,
-              lineHeight: 1.8,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+              gap: 12,
+              marginTop: 15,
             }}
           >
-            Araku Natural was founded with a simple mission — to provide
-            authentic, natural, and healthy food products without compromising
-            on quality. We carefully source premium oils, millets, spices,
-            coffee, and wellness products that retain their natural nutrition
-            and traditional goodness.
-          </p>
-        </div>
-
-        {/* Stats */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))",
-            gap: "20px",
-          }}
-        >
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              style={{
-                background: "#fff",
-                borderRadius: "15px",
-                padding: "1.5rem",
-                textAlign: "center",
-                boxShadow: "0 5px 15px rgba(0,0,0,0.08)",
-              }}
-            >
+            {[
+              { t: "Justdial", v: "4.2/5" },
+              { t: "Yappe", v: "4.5/5" },
+              { t: "Trust", v: "High" },
+            ].map((r) => (
               <div
+                key={r.t}
                 style={{
-                  color: COLORS.primary,
-                  fontSize: "2rem",
-                  fontWeight: 800,
+                  background: "#fff",
+                  padding: "14px",
+                  borderRadius: 12,
+                  textAlign: "center",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
                 }}
               >
-                {stat.number}
+                <b>{r.t}</b>
+                <p style={{ marginTop: 6 }}>{r.v}</p>
               </div>
+            ))}
+          </div>
+        </div>
 
+        {/* BRANCHES */}
+        <div>
+          <h3 style={{ fontSize: "1.4rem" }}>🏬 Our Branches</h3>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 15,
+              marginTop: 15,
+            }}
+          >
+            {branches.map((b) => (
               <div
+                key={b.name}
                 style={{
-                  color: COLORS.textMuted,
-                  marginTop: 8,
+                  background: "#fff",
+                  padding: "16px",
+                  borderRadius: 12,
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
                 }}
               >
-                {stat.label}
+                <h4>{b.name}</h4>
+                <p style={{ color: "#666" }}>📍 {b.location}</p>
+                <p style={{ fontSize: 13, color: "#888" }}>{b.note}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+
       </div>
     </section>
   );
