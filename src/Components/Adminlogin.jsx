@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ADMIN_PASSWORD = "aruku@admin2024"; // Change this to your password
+const ADMIN_PASSWORD = "aruku2024"; // Change this to your password
 
 export default function AdminLogin({ onLogin, onClose }) {
   const [password, setPassword] = useState("");
