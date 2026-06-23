@@ -14,13 +14,11 @@ const allProducts = categories.flatMap((cat) =>
   cat.products.map((p) => ({
     name: p.name,
     category: cat.label,
-    icon: cat.icon,
     color: cat.color,
   }))
 );
 
 export default function Navbar({
-  activeSection,
   setSection,
   searchTerm,
   setSearchTerm,
@@ -28,7 +26,23 @@ export default function Navbar({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
   const searchRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+
+      if (window.innerWidth > 768) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const suggestions =
     searchTerm.trim()
@@ -41,24 +55,17 @@ export default function Navbar({
           .slice(0, 8)
       : [];
 
-  // close dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setDropdownOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
 
-  // close menu on resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) setMenuOpen(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    document.addEventListener("mousedown", handleClick);
+
+    return () =>
+      document.removeEventListener("mousedown", handleClick);
   }, []);
 
   const handleNav = (id) => {
@@ -73,17 +80,6 @@ export default function Navbar({
     setDropdownOpen(true);
   };
 
-  const handleSelect = (product) => {
-    setSearchTerm(product.name);
-    setSection("products");
-    setDropdownOpen(false);
-  };
-
-  const clearSearch = () => {
-    setSearchTerm("");
-    setDropdownOpen(false);
-  };
-
   return (
     <nav
       style={{
@@ -91,18 +87,18 @@ export default function Navbar({
         top: 0,
         zIndex: 1000,
         background: COLORS.primary,
-        boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+        boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
       }}
     >
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          height: "70px",
+          padding: isMobile ? "10px" : "12px 16px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 16px",
+          gap: "12px",
         }}
       >
         {/* LOGO */}
@@ -111,7 +107,7 @@ export default function Navbar({
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "10px",
+            gap: "8px",
             cursor: "pointer",
           }}
         >
@@ -119,151 +115,195 @@ export default function Navbar({
             src={logo}
             alt="logo"
             style={{
-              width: 45,
-              height: 45,
+              width: isMobile ? 40 : 48,
+              height: isMobile ? 40 : 48,
               borderRadius: "50%",
               background: "#fff",
             }}
           />
-          <div style={{ color: "#fff" }}>
-            <div style={{ fontWeight: "bold" }}>Aruku Natural</div>
-            <div style={{ fontSize: "11px", opacity: 0.8 }}>
-              Pure • Organic • Traditional
+
+          {!isMobile && (
+            <div style={{ color: "#fff" }}>
+              <div style={{ fontWeight: "700" }}>
+                Aruku Natural
+              </div>
+
+              <div
+                style={{
+                  fontSize: "11px",
+                  opacity: 0.85,
+                }}
+              >
+                Pure • Organic • Traditional
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* SEARCH */}
-        <div ref={searchRef} style={{ position: "relative", flex: 1, margin: "0 10px" }}>
+        {/* SEARCH DESKTOP */}
+        {!isMobile && (
+          <div
+            ref={searchRef}
+            style={{
+              position: "relative",
+              flex: 1,
+              margin: "0 15px",
+            }}
+          >
+            <input
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Search products..."
+              style={{
+                width: "100%",
+                padding: "10px 16px",
+                borderRadius: "25px",
+                border: "none",
+                outline: "none",
+              }}
+            />
+
+            {dropdownOpen && suggestions.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "45px",
+                  left: 0,
+                  right: 0,
+                  background: "#fff",
+                  borderRadius: "12px",
+                  boxShadow:
+                    "0 10px 20px rgba(0,0,0,0.15)",
+                  overflow: "hidden",
+                }}
+              >
+                {suggestions.map((p, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      padding: "10px",
+                      borderBottom: "1px solid #eee",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      setSearchTerm(p.name);
+                      setSection("products");
+                      setDropdownOpen(false);
+                    }}
+                  >
+                    <div>{p.name}</div>
+
+                    <small style={{ color: p.color }}>
+                      {p.category}
+                    </small>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* DESKTOP MENU */}
+        {!isMobile ? (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNav(item.id)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "#fff",
+                  cursor: "pointer",
+                  padding: "8px 12px",
+                  borderRadius: "8px",
+                  fontWeight: 500,
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+
+            <button
+              onClick={() => setShowAdmin(true)}
+              style={{
+                background: "#000",
+                color: "#fff",
+                border: "none",
+                padding: "8px 14px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontWeight: 700,
+              }}
+            >
+              Admin
+            </button>
+          </div>
+        ) : (
+          /* MOBILE HAMBURGER */
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#fff",
+              fontSize: "28px",
+              cursor: "pointer",
+            }}
+          >
+            ☰
+          </button>
+        )}
+      </div>
+
+      {/* MOBILE SEARCH */}
+      {isMobile && (
+        <div
+          style={{
+            padding: "0 10px 10px",
+            background: COLORS.primary,
+          }}
+        >
           <input
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search products..."
             style={{
               width: "100%",
-              padding: "8px 12px",
+              padding: "10px",
               borderRadius: "20px",
               border: "none",
               outline: "none",
             }}
-            onFocus={() => searchTerm && setDropdownOpen(true)}
           />
-
-          {searchTerm && (
-            <span
-              onClick={clearSearch}
-              style={{
-                position: "absolute",
-                right: 10,
-                top: 8,
-                cursor: "pointer",
-              }}
-            >
-              ✕
-            </span>
-          )}
-
-          {/* DROPDOWN */}
-          {dropdownOpen && suggestions.length > 0 && (
-            <div
-              style={{
-                position: "absolute",
-                top: "40px",
-                left: 0,
-                right: 0,
-                background: "#fff",
-                borderRadius: "10px",
-                boxShadow: "0 10px 20px rgba(0,0,0,0.15)",
-                maxHeight: "250px",
-                overflowY: "auto",
-                zIndex: 999,
-              }}
-            >
-              {suggestions.map((p, i) => (
-                <div
-                  key={i}
-                  onClick={() => handleSelect(p)}
-                  style={{
-                    padding: "10px",
-                    cursor: "pointer",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <div style={{ fontWeight: 600 }}>{p.name}</div>
-                  <div style={{ fontSize: "12px", color: p.color }}>
-                    {p.category}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
+      )}
 
-        {/* DESKTOP MENU */}
+      {/* MOBILE MENU */}
+      {menuOpen && isMobile && (
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
+            background: "#1e6e32",
+            padding: "10px",
           }}
         >
           {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleNav(item.id)}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#fff",
-                cursor: "pointer",
-                padding: "6px 10px",
-                borderRadius: "6px",
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-
-          {/* ⭐ ADMIN BUTTON */}
-          <button
-            onClick={() => setShowAdmin(true)}
-            style={{
-              background: "#000",
-              color: "#fff",
-              border: "none",
-              padding: "6px 10px",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontWeight: 700,
-            }}
-          >
-            Admin
-          </button>
-
-          {/* MOBILE MENU */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{
-              display: "none",
-              background: "transparent",
-              border: "none",
-              color: "#fff",
-              fontSize: "22px",
-            }}
-          >
-            ☰
-          </button>
-        </div>
-      </div>
-
-      {/* MOBILE MENU */}
-      {menuOpen && (
-        <div style={{ background: "#1e6e32", padding: "10px" }}>
-          {navItems.map((item) => (
             <div
               key={item.id}
               onClick={() => handleNav(item.id)}
-              style={{ padding: "10px", color: "#fff", cursor: "pointer" }}
+              style={{
+                padding: "12px",
+                color: "#fff",
+                borderBottom:
+                  "1px solid rgba(255,255,255,0.15)",
+                cursor: "pointer",
+              }}
             >
               {item.label}
             </div>
@@ -271,7 +311,12 @@ export default function Navbar({
 
           <div
             onClick={() => setShowAdmin(true)}
-            style={{ padding: "10px", color: "#fff", fontWeight: "bold" }}
+            style={{
+              padding: "12px",
+              color: "#fff",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
           >
             Admin
           </div>
