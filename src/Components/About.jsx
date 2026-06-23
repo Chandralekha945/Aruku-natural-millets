@@ -20,8 +20,8 @@ const branches = [
     badge: "⭐ Top Rated",
   },
   {
-    name: "Aruku Branch",
-    address: "Aruku, Andhra Pradesh",
+    name: "seethammadhara Branch",
+    address: "First Floor, 49-53-10/1 4th Town Road, Balayya Sastri Layout, Seethammadara, Visakhapatnam, Andhra Pradesh 530013",
     timings: "Mon – Sun: 9:00 AM – 9:00 PM",
     phone: "+91 9550972999",
     rating: 4.3,
@@ -34,7 +34,7 @@ const branches = [
 const reviews = [
   { name: "Ravi Kumar", branch: "Muralinagar Branch", rating: 5, text: "Very clean store with great quality products. The cold-pressed oils are authentic and fresh. Highly recommend!", source: "Yappe.in", avatar: "RK" },
   { name: "Lakshmi Devi", branch: "Muralinagar Branch", rating: 5, text: "Amazing millets and spice powders. You can feel the difference in taste. Pure and natural products.", source: "JustDial", avatar: "LD" },
-  { name: "Suresh Babu", branch: "Aruku Branch", rating: 4, text: "Good variety of products. Store is well-organized and staff is helpful. Will visit again.", source: "JustDial", avatar: "SB" },
+  { name: "Suresh Babu", branch: "seethammadhara Branch", rating: 4, text: "Good variety of products. Store is well-organized and staff is helpful. Will visit again.", source: "JustDial", avatar: "SB" },
   { name: "Priya Reddy", branch: "Muralinagar Branch", rating: 5, text: "Best place for organic products in Vizag. The groundnut oil is excellent. Very affordable prices.", source: "Yappe.in", avatar: "PR" },
   { name: "Venkat Rao", branch: "Aruku Branch", rating: 4, text: "Trusted store for natural products. Been buying from here for over a year. Quality is always consistent.", source: "JustDial", avatar: "VR" },
 ];
