@@ -299,7 +299,7 @@ export default function About() {
                   <div className="branch-info"><span className="branch-icon"></span><span>{b.address}</span></div>
                   <div className="branch-info"><span className="branch-icon"></span><span>{b.timings}</span></div>
                   <div className="branch-info"><span className="branch-icon"></span><span>{b.phone}</span></div>
-                  <div className="branch-info"><span className="branch-icon">⭐</span><span><b>{b.rating}/5</b> based on {b.reviews}+ reviews</span></div>
+                  <div className="branch-info"><span className="branch-icon"></span><span><b>{b.rating}/5</b> based on {b.reviews}+ reviews</span></div>
                   <StarRating rating={b.rating} />
                   <a href={b.mapLink} target="_blank" rel="noreferrer" className="branch-map-btn">📍 View on Google Maps</a>
                 </div>
