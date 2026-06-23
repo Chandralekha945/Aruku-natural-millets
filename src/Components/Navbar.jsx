@@ -14,7 +14,6 @@ const allProducts = categories.flatMap((cat) =>
   cat.products.map((p) => ({
     name: p.name,
     category: cat.label,
-    categoryId: cat.id,
     icon: cat.icon,
     color: cat.color,
   }))
@@ -25,22 +24,24 @@ export default function Navbar({
   setSection,
   searchTerm,
   setSearchTerm,
+  setShowAdmin,
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const searchRef = useRef(null);
 
   const suggestions =
-    searchTerm.trim().length > 0
+    searchTerm.trim()
       ? allProducts
           .filter((p) =>
             (p.name + " " + p.category)
               .toLowerCase()
-              .includes(searchTerm.trim().toLowerCase())
+              .includes(searchTerm.toLowerCase())
           )
           .slice(0, 8)
       : [];
 
+  // close dropdown on outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -51,7 +52,7 @@ export default function Navbar({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Close menu on resize to desktop
+  // close menu on resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) setMenuOpen(false);
@@ -63,13 +64,13 @@ export default function Navbar({
   const handleNav = (id) => {
     setSection(id);
     setMenuOpen(false);
+    setDropdownOpen(false);
   };
 
-  const handleInput = (e) => {
+  const handleSearch = (e) => {
     setSearchTerm(e.target.value);
     setSection("products");
     setDropdownOpen(true);
-    setMenuOpen(false);
   };
 
   const handleSelect = (product) => {
@@ -78,344 +79,204 @@ export default function Navbar({
     setDropdownOpen(false);
   };
 
-  const handleClear = () => {
+  const clearSearch = () => {
     setSearchTerm("");
     setDropdownOpen(false);
   };
 
   return (
-    <>
-      <style>{`
-        .navbar-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
-          height: 70px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        .logo-text-main {
-          color: #fff;
-          font-weight: 800;
-          font-size: 20px;
-        }
-        .logo-tagline {
-          color: rgba(255,255,255,0.85);
-          font-size: 12px;
-        }
-        .desktop-nav {
-          display: flex;
-          align-items: center;
-          gap: 2px;
-        }
-        .hamburger {
-          display: none;
-          background: transparent;
-          border: none;
-          color: #fff;
-          font-size: 26px;
-          cursor: pointer;
-          padding: 6px;
-          line-height: 1;
-        }
-        .mobile-menu {
-          display: none;
-          flex-direction: column;
-          background: #1e6e32;
-          padding: 10px 0;
-          border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        .mobile-menu.open {
-          display: flex;
-        }
-        .mobile-menu button {
-          background: transparent;
-          border: none;
-          color: #fff;
-          padding: 14px 24px;
-          font-size: 15px;
-          font-weight: 500;
-          text-align: left;
-          cursor: pointer;
-          font-family: inherit;
-          border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-        .mobile-menu button:hover {
-          background: rgba(255,255,255,0.08);
-        }
-        .mobile-menu button.active {
-          font-weight: 700;
-          color: #a8f0b0;
-        }
-        .search-wrapper {
-          position: relative;
-          min-width: 240px;
-        }
-        @media (max-width: 768px) {
-          .navbar-inner {
-            height: 62px;
-            padding: 0 14px;
-          }
-          .logo-text-main {
-            font-size: 15px;
-          }
-          .logo-tagline {
-            display: none;
-          }
-          .desktop-nav {
-            display: none;
-          }
-          .hamburger {
-            display: block;
-          }
-          .search-wrapper {
-            min-width: 0;
-            flex: 1;
-            margin: 0 10px;
-          }
-        }
-        @media (max-width: 400px) {
-          .logo-text-main {
-            font-size: 13px;
-          }
-        }
-      `}</style>
-
-      <nav
+    <nav
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        background: COLORS.primary,
+        boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+      }}
+    >
+      <div
         style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1000,
-          background: COLORS.primary,
-          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
+          maxWidth: "1200px",
+          margin: "0 auto",
+          height: "70px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 16px",
         }}
       >
-        <div className="navbar-inner">
-          {/* Logo */}
-          <div
-            onClick={() => handleNav("home")}
+        {/* LOGO */}
+        <div
+          onClick={() => handleNav("home")}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            cursor: "pointer",
+          }}
+        >
+          <img
+            src={logo}
+            alt="logo"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              cursor: "pointer",
-              flexShrink: 0,
+              width: 45,
+              height: 45,
+              borderRadius: "50%",
+              background: "#fff",
             }}
-          >
-            <img
-              src={logo}
-              alt="Aruku Natural"
-              style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "50%",
-                objectFit: "cover",
-                background: "#fff",
-                padding: "2px",
-                flexShrink: 0,
-              }}
-            />
-            <div>
-              <div className="logo-text-main">Aruku Natural Millets</div>
-              <div className="logo-tagline">Pure • Organic • Traditional</div>
+          />
+          <div style={{ color: "#fff" }}>
+            <div style={{ fontWeight: "bold" }}>Aruku Natural</div>
+            <div style={{ fontSize: "11px", opacity: 0.8 }}>
+              Pure • Organic • Traditional
             </div>
           </div>
-
-          {/* Search Bar */}
-          <div className="search-wrapper" ref={searchRef}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                background: "rgba(255,255,255,0.15)",
-                padding: "7px 12px",
-                borderRadius:
-                  dropdownOpen && suggestions.length > 0
-                    ? "12px 12px 0 0"
-                    : "25px",
-                transition: "border-radius 0.15s",
-              }}
-            >
-              <span style={{ color: "#fff", marginRight: "7px", fontSize: "15px" }}>
-                🔍
-              </span>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={handleInput}
-                onFocus={() => searchTerm.trim() && setDropdownOpen(true)}
-                style={{
-                  border: "none",
-                  outline: "none",
-                  background: "transparent",
-                  color: "#fff",
-                  width: "100%",
-                  fontSize: "13px",
-                }}
-              />
-              {searchTerm && (
-                <span
-                  onClick={handleClear}
-                  style={{
-                    color: "rgba(255,255,255,0.7)",
-                    cursor: "pointer",
-                    fontSize: "15px",
-                    marginLeft: "5px",
-                    lineHeight: 1,
-                  }}
-                >
-                  ✕
-                </span>
-              )}
-            </div>
-
-            {/* Dropdown */}
-            {dropdownOpen && suggestions.length > 0 && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  right: 0,
-                  background: "#fff",
-                  borderRadius: "0 0 14px 14px",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-                  zIndex: 2000,
-                  overflow: "hidden",
-                  maxHeight: "320px",
-                  overflowY: "auto",
-                }}
-              >
-                {suggestions.map((product, i) => (
-                  <div
-                    key={i}
-                    onMouseDown={() => handleSelect(product)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                      padding: "10px 14px",
-                      cursor: "pointer",
-                      borderBottom:
-                        i < suggestions.length - 1
-                          ? "1px solid #f0f0f0"
-                          : "none",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = "#f5fdf6")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
-                  >
-                    <div
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
-                        background: "#F0FAF2",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "14px",
-                        flexShrink: 0,
-                      }}
-                    >
-                      {product.icon}
-                    </div>
-                    <div>
-                      <div style={{ fontSize: "13px", fontWeight: 600, color: "#1a1a1a" }}>
-                        {product.name}
-                      </div>
-                      <div style={{ fontSize: "11px", color: product.color, fontWeight: 500 }}>
-                        {product.category}
-                      </div>
-                    </div>
-                    <div style={{ marginLeft: "auto", color: "#ccc", fontSize: "13px" }}>
-                      →
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* No results */}
-            {dropdownOpen &&
-              searchTerm.trim().length > 0 &&
-              suggestions.length === 0 && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: 0,
-                    right: 0,
-                    background: "#fff",
-                    borderRadius: "0 0 14px 14px",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-                    zIndex: 2000,
-                    padding: "14px 16px",
-                    color: "#888",
-                    fontSize: "13px",
-                    textAlign: "center",
-                  }}
-                >
-                  No products match "{searchTerm}"
-                </div>
-              )}
-          </div>
-
-          {/* Desktop Nav */}
-          <div className="desktop-nav">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNav(item.id)}
-                style={{
-                  background:
-                    activeSection === item.id
-                      ? "rgba(255,255,255,0.18)"
-                      : "transparent",
-                  border: "none",
-                  color: "#fff",
-                  padding: "8px 10px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontWeight: activeSection === item.id ? 700 : 500,
-                  fontSize: "14px",
-                  transition: "0.2s",
-                  fontFamily: "inherit",
-                }}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Hamburger (mobile only) */}
-          <button
-            className="hamburger"
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label="Menu"
-          >
-            {menuOpen ? "✕" : "☰"}
-          </button>
         </div>
 
-        {/* Mobile Menu */}
-        <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
+        {/* SEARCH */}
+        <div ref={searchRef} style={{ position: "relative", flex: 1, margin: "0 10px" }}>
+          <input
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search products..."
+            style={{
+              width: "100%",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              border: "none",
+              outline: "none",
+            }}
+            onFocus={() => searchTerm && setDropdownOpen(true)}
+          />
+
+          {searchTerm && (
+            <span
+              onClick={clearSearch}
+              style={{
+                position: "absolute",
+                right: 10,
+                top: 8,
+                cursor: "pointer",
+              }}
+            >
+              ✕
+            </span>
+          )}
+
+          {/* DROPDOWN */}
+          {dropdownOpen && suggestions.length > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: "40px",
+                left: 0,
+                right: 0,
+                background: "#fff",
+                borderRadius: "10px",
+                boxShadow: "0 10px 20px rgba(0,0,0,0.15)",
+                maxHeight: "250px",
+                overflowY: "auto",
+                zIndex: 999,
+              }}
+            >
+              {suggestions.map((p, i) => (
+                <div
+                  key={i}
+                  onClick={() => handleSelect(p)}
+                  style={{
+                    padding: "10px",
+                    cursor: "pointer",
+                    borderBottom: "1px solid #eee",
+                  }}
+                >
+                  <div style={{ fontWeight: 600 }}>{p.name}</div>
+                  <div style={{ fontSize: "12px", color: p.color }}>
+                    {p.category}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* DESKTOP MENU */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
           {navItems.map((item) => (
             <button
               key={item.id}
-              className={activeSection === item.id ? "active" : ""}
               onClick={() => handleNav(item.id)}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#fff",
+                cursor: "pointer",
+                padding: "6px 10px",
+                borderRadius: "6px",
+              }}
             >
               {item.label}
             </button>
           ))}
+
+          {/* ⭐ ADMIN BUTTON */}
+          <button
+            onClick={() => setShowAdmin(true)}
+            style={{
+              background: "#000",
+              color: "#fff",
+              border: "none",
+              padding: "6px 10px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: 700,
+            }}
+          >
+            Admin
+          </button>
+
+          {/* MOBILE MENU */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "none",
+              background: "transparent",
+              border: "none",
+              color: "#fff",
+              fontSize: "22px",
+            }}
+          >
+            ☰
+          </button>
         </div>
-      </nav>
-    </>
+      </div>
+
+      {/* MOBILE MENU */}
+      {menuOpen && (
+        <div style={{ background: "#1e6e32", padding: "10px" }}>
+          {navItems.map((item) => (
+            <div
+              key={item.id}
+              onClick={() => handleNav(item.id)}
+              style={{ padding: "10px", color: "#fff", cursor: "pointer" }}
+            >
+              {item.label}
+            </div>
+          ))}
+
+          <div
+            onClick={() => setShowAdmin(true)}
+            style={{ padding: "10px", color: "#fff", fontWeight: "bold" }}
+          >
+            Admin
+          </div>
+        </div>
+      )}
+    </nav>
   );
 }

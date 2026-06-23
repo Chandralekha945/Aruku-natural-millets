@@ -27,55 +27,17 @@ export default function Products({ searchTerm, activeCategory, setSelectedProduc
     <section
       style={{
         background: COLORS.primaryPale,
-        padding: "5rem 1.5rem",
+        padding: "2rem 1.5rem",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        {/* Heading */}
-        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <div
-            style={{
-              color: COLORS.primary,
-              fontWeight: 700,
-              fontSize: "13px",
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              marginBottom: "10px",
-            }}
-          >
-            Our Products
-          </div>
-
-          <h2
-            style={{
-              fontSize: "2.3rem",
-              fontWeight: 800,
-              color: COLORS.text,
-              marginBottom: "1rem",
-            }}
-          >
-            Explore Our Natural Collection
-          </h2>
-
-          <p
-            style={{
-              maxWidth: "650px",
-              margin: "0 auto",
-              color: COLORS.textMuted,
-              lineHeight: 1.7,
-            }}
-          >
-            Premium cold-pressed oils, organic millets, spices, coffee,
-            flours, and wellness products sourced directly from trusted farms.
-          </p>
-        </div>
+      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
 
         {/* No Results */}
         {shown.length === 0 && (
           <div
             style={{
               textAlign: "center",
-              padding: "3rem",
+              padding: "2rem",
               background: "#fff",
               borderRadius: "16px",
             }}
@@ -89,14 +51,14 @@ export default function Products({ searchTerm, activeCategory, setSelectedProduc
 
         {/* Product Categories */}
         {shown.map((cat) => (
-          <div key={cat.id} style={{ marginBottom: "3rem" }}>
+          <div key={cat.id} style={{ marginBottom: "1.5rem" }}>
             {/* Category Header */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "12px",
-                marginBottom: "1.5rem",
+                marginBottom: "0.5rem",
               }}
             >
               <div

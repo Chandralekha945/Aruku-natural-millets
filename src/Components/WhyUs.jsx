@@ -1,10 +1,10 @@
 import COLORS from "../theme";
 
 const points = [
-  { icon: "🧪", title: "No Chemicals",     desc: "Zero preservatives, additives or artificial flavours in any product." },
-  { icon: "🏡", title: "Farm Direct",      desc: "Sourced straight from trusted farmers across Andhra Pradesh & beyond." },
-  { icon: "⚙️", title: "Cold Pressed",     desc: "Traditional wooden churner (Ghani) method retains full nutrition." },
-  { icon: "🌱", title: "Organic Certified", desc: "Grown without pesticides or synthetic fertilisers." },
+  { icon: "", title: "No Chemicals",     desc: "Zero preservatives, additives or artificial flavours in any product." },
+  { icon: "", title: "Farm Direct",      desc: "Sourced straight from trusted farmers across Andhra Pradesh & beyond." },
+  { icon: "", title: "Cold Pressed",     desc: "Traditional wooden churner (Ghani) method retains full nutrition." },
+  { icon: "", title: "Organic Certified", desc: "Grown without pesticides or synthetic fertilisers." },
 ];
 
 export default function WhyUs() {
@@ -26,7 +26,7 @@ export default function WhyUs() {
               background: COLORS.cardBg,
               borderRadius: 16,
               padding: "1rem 1.5rem",
-              boxShadow: "0 2px 16px rgba(0,0,0,0.06)",
+              boxShadow: "0 2px 16px rgba(41, 26, 26, 0.06)",
               borderTop: `4px solid ${COLORS.accent}`,
             }}>
               <div style={{ fontSize: 36, marginBottom: 14 }}>{p.icon}</div>

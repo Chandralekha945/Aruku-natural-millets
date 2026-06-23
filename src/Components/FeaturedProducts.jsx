@@ -12,7 +12,7 @@ const featured = [
 export default function FeaturedProducts({ setSection, searchTerm, setSelectedProduct }) {
   return (
     <section style={{ background: "#F8FCF8", padding: "5rem 1.5rem" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
 
         {/* Heading */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2rem", flexWrap: "wrap", gap: 12 }}>

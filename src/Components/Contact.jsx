@@ -2,9 +2,9 @@ import COLORS from "../theme";
 import { whatsappLink } from "../constants";
 
 const contactCards = [
-  { icon: "📞", title: "Phone / WhatsApp", detail: "9550972999" },
-  { icon: "📍", title: "Location", detail: "Andhra Pradesh, India" },
-  { icon: "🕐", title: "Order Hours", detail: "9:00 AM – 8:00 PM (All Days)" },
+  { title: "Phone/WhatsApp", detail: "9550972999" },
+  { title: "Location", detail: "Andhra Pradesh, India" },
+  { title: "Order Hours", detail: "9:00 AM – 8:00 PM (All Days)" },
 ];
 
 export default function Contact() {
@@ -12,11 +12,16 @@ export default function Contact() {
     <section
       style={{
         background: `linear-gradient(135deg, ${COLORS.bg}, #f7f7f7)`,
-        padding: "6rem 1.5rem",
+        padding: "4rem 1.3rem",
       }}
     >
-      <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-        
+      <div
+        style={{
+          maxWidth: 900,
+          margin: "0 auto",
+          textAlign: "center",
+        }}
+      >
         {/* Badge */}
         <div
           style={{
@@ -37,14 +42,14 @@ export default function Contact() {
         {/* Title */}
         <h2
           style={{
-            fontSize: "2.4rem",
+            fontSize: "1.9rem",
             fontWeight: 800,
             color: COLORS.text,
             fontFamily: "Georgia, serif",
-            marginBottom: 12,
+            marginBottom: 9,
           }}
         >
-          Let’s Talk & Place Your Order
+          Let's Talk & Place Your Order
         </h2>
 
         {/* Subtitle */}
@@ -53,43 +58,71 @@ export default function Contact() {
             color: COLORS.textMuted,
             lineHeight: 1.8,
             maxWidth: 650,
-            margin: "0 auto 2.5rem",
+            margin: "0 auto 1rem",
             fontSize: 15,
           }}
         >
-          The fastest way to order fresh, natural products is through WhatsApp.
-          Click below and we’ll respond quickly with pricing and availability.
+         At Aruku Natural Millets, every product is carefully sourced from trusted
+  farmers and prepared using traditional methods. We focus on purity,
+  freshness, and quality, ensuring that the oils, millets, spices, and
+  natural foods you receive are free from harmful chemicals and unnecessary
+  additives. Your family's health and trust are our highest priorities. The fastest way to order fresh, natural products is through WhatsApp.
+          Click below and we'll respond quickly with pricing and availability.
         </p>
 
-        {/* WhatsApp CTA */}
-        <a
-          href={whatsappLink("Hi Aruku Natural! I want to place an order.")}
-          target="_blank"
-          rel="noreferrer"
+        {/* Buttons */}
+        <div
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 12,
-            background: "linear-gradient(135deg, #25D366, #1ebe5d)",
-            color: "#fff",
-            padding: "16px 42px",
-            borderRadius: 14,
-            fontWeight: 800,
-            fontSize: 16,
-            textDecoration: "none",
-            boxShadow: "0 10px 25px rgba(37, 211, 102, 0.25)",
-            transition: "transform 0.2s ease",
+            display: "flex",
+            justifyContent: "center",
+            gap: "15px",
+            flexWrap: "wrap",
+            marginTop: "20px",
           }}
-          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
-          📲 Chat on WhatsApp
-        </a>
+          {/* WhatsApp Button */}
+          <a
+            href={whatsappLink(
+              "Hi Aruku Natural! I want to place an order."
+            )}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              background: "linear-gradient(135deg, #25D366, #1ebe5d)",
+              color: "#fff",
+              padding: "16px 38px",
+              borderRadius: 13,
+              fontWeight: 800,
+              fontSize: 14,
+              textDecoration: "none",
+              boxShadow: "0 10px 25px rgba(37,211,102,0.25)",
+            }}
+          >
+            Chat on WhatsApp
+          </a>
+
+          {/* Call Button */}
+          <a
+            href="tel:+919550972999"
+            style={{
+              background: "linear-gradient(135deg, #da8a4c, #f02b2b)",
+              color: "#fff",
+              padding: "16px 38px",
+              borderRadius: 13,
+              fontWeight: 800,
+              fontSize: 14,
+              textDecoration: "none",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+            }}
+          >
+            Call Now
+          </a>
+        </div>
 
         {/* Divider */}
         <div
           style={{
-            margin: "3rem 0 1.5rem",
+            margin: "2rem 0 1rem",
             color: COLORS.textMuted,
             fontSize: 13,
             letterSpacing: 1,
@@ -103,7 +136,7 @@ export default function Contact() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: 20,
+            gap: "10px",
           }}
         >
           {contactCards.map((card) => (
@@ -116,24 +149,9 @@ export default function Contact() {
                 padding: "1.5rem",
                 textAlign: "center",
                 boxShadow: "0 8px 20px rgba(0,0,0,0.05)",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                cursor: "default",
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = "translateY(-5px)";
-                e.currentTarget.style.boxShadow =
-                  "0 12px 28px rgba(0,0,0,0.08)";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow =
-                  "0 8px 20px rgba(0,0,0,0.05)";
+                transition: "all 0.3s ease",
               }}
             >
-              <div style={{ fontSize: 28, marginBottom: 10 }}>
-                {card.icon}
-              </div>
-
               <div
                 style={{
                   fontWeight: 700,

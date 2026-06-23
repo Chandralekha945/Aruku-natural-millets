@@ -12,18 +12,46 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import AdminLogin from "./components/AdminLogin";
+import AdminDashboard from "./components/AdminDashboard";
 
 export default function App() {
   const [section, setSection] = useState("home");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
-  // Always clear selected product when navigating
   const handleSetSection = (sec) => {
     setSelectedProduct(null);
     setSection(sec);
   };
+
+  const handleAdminLogin = () => {
+    setIsAdminLoggedIn(true);
+    setShowAdminLogin(false);
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminLoggedIn(false);
+  };
+
+  // Show admin dashboard
+  if (isAdminLoggedIn) {
+    return (
+      <>
+        <Navbar
+          activeSection={section}
+          setSection={handleSetSection}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          setShowAdmin={setShowAdminLogin}
+        />
+        <AdminDashboard onLogout={handleAdminLogout} />
+      </>
+    );
+  }
 
   const renderSection = () => {
     if (selectedProduct) {
@@ -46,13 +74,10 @@ export default function App() {
             setSelectedProduct={setSelectedProduct}
           />
         );
-
       case "about":
         return <About />;
-
       case "contact":
         return <Contact />;
-
       default:
         return (
           <>
@@ -83,9 +108,9 @@ export default function App() {
         setSection={handleSetSection}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        setShowAdmin={setShowAdminLogin}
       />
 
-      {/* Category bar always visible below navbar */}
       <CategoryBar
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
@@ -94,9 +119,16 @@ export default function App() {
 
       <main>{renderSection()}</main>
 
-      <Footer setSection={handleSetSection} />
+      <Footer setSection={handleSetSection} onAdminClick={() => setShowAdminLogin(true)} />
 
       <WhatsAppButton />
+
+      {showAdminLogin && (
+        <AdminLogin
+          onLogin={handleAdminLogin}
+          onClose={() => setShowAdminLogin(false)}
+        />
+      )}
     </div>
   );
 }

@@ -49,7 +49,7 @@ const categories = [
   {
     id: "oils",
     label: "Cold Pressed Oils",
-    icon: "🫙",
+    // icon: "🫙",
     color: "#098a25",
     bg: "#F0FAF2",
     products: [
@@ -94,7 +94,7 @@ const categories = [
   {
     id: "powders",
     label: "Spice Powders",
-    icon: "🌶️",
+    // icon: "🌶️",
     color: "#098a25",
     bg: "#F0FAF2",
     products: [
@@ -164,7 +164,7 @@ const categories = [
   {
     id: "millets",
     label: "Millets & Grains",
-    icon: "🌾",
+    // icon: "🌾",
     color: "#098a25",
     bg: "#F0FAF2",
     products: [
@@ -251,7 +251,7 @@ const categories = [
   {
     id: "flours",
     label: "Flours & Jaggery",
-    icon: "🏺",
+    // icon: "🏺",
     color: "#098a25",
     bg: "#F0FAF2",
     products: [
@@ -308,7 +308,7 @@ const categories = [
   {
     id: "coffee",
     label: "Coffee",
-    icon: "☕",
+    // icon: "☕",
     color: "#098a25",
     bg: "#F0FAF2",
     products: [
@@ -353,7 +353,7 @@ const categories = [
   {
     id: "wellness",
     label: "Wellness & Beauty",
-    icon: "🍃",
+    // icon: "🍃",
     color: "#098a25",
     bg: "#F0FAF2",
     products: [

@@ -129,10 +129,10 @@ export default function Hero({ setSection }) {
             }}
           >
             {[
-              "☕ Premium Coffee",
-              "🌾 Organic Millets",
-              "🫙 Cold Pressed Oils",
-              "🌶️ Traditional Spices",
+              " Premium Coffee",
+              " Organic Millets",
+              " Cold Pressed Oils",
+              " Traditional Spices",
             ].map((item) => (
               <div
                 key={item}
