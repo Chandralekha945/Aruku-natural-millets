@@ -28,6 +28,7 @@ export default function ProductCard({ name, sizes, desc, img, category, onClick 
           flex-direction: column;
           transition: box-shadow 0.25s, transform 0.25s;
           cursor: pointer;
+          height: 100%;
         }
         .pcard:hover {
           box-shadow: 0 8px 28px rgba(9,138,37,0.13);
@@ -60,7 +61,7 @@ export default function ProductCard({ name, sizes, desc, img, category, onClick 
           font-size: 12.5px;
           color: #5A6E5A;
           line-height: 1.55;
-          flex-grow: 1;
+          min-height: 58px;
           display: -webkit-box;
           -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
@@ -84,6 +85,8 @@ export default function ProductCard({ name, sizes, desc, img, category, onClick 
           display: flex;
           flex-wrap: wrap;
           gap: 5px;
+          min-height: 58px;
+  align-content: flex-start;
         }
         .pcard-size-btn {
           padding: 4px 10px;
@@ -115,7 +118,7 @@ export default function ProductCard({ name, sizes, desc, img, category, onClick 
           .pcard-img { height: 130px; }
           .pcard-body { padding: 10px 10px 12px; gap: 6px; }
           .pcard-name { font-size: 13px; }
-          .pcard-desc { font-size: 11.5px; -webkit-line-clamp: 2; }
+          .pcard-desc { font-size: 11.5px; -webkit-line-clamp: 2; min-height: 36px; }
           .pcard-badge { font-size: 9px; padding: 2px 6px; }
           .pcard-size-btn { font-size: 10px; padding: 3px 8px; }
           .pcard-order-btn { font-size: 12px; padding: 9px 6px; gap: 4px; }
@@ -157,25 +160,26 @@ export default function ProductCard({ name, sizes, desc, img, category, onClick 
             ))}
           </div>
 
-          {sizes[0] !== "available" && (
-            <div className="pcard-sizes">
-              {sizes.map((s) => (
-                <button
-                  key={s}
-                  className="pcard-size-btn"
-                  onClick={(e) => { e.stopPropagation(); setSelected(s); }}
-                  style={{
-                    border: `1.5px solid ${selected === s ? "#098a25" : "#C8E6C9"}`,
-                    background: selected === s ? "#E8F5E9" : "#fff",
-                    color: selected === s ? "#098a25" : "#5A6E5A",
-                  }}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
-
+          <div className="pcard-sizes">
+  {sizes[0] !== "available" &&
+    sizes.map((s) => (
+      <button
+        key={s}
+        className="pcard-size-btn"
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelected(s);
+        }}
+        style={{
+          border: `1.5px solid ${selected === s ? "#098a25" : "#C8E6C9"}`,
+          background: selected === s ? "#E8F5E9" : "#fff",
+          color: selected === s ? "#098a25" : "#5A6E5A",
+        }}
+      >
+        {s}
+      </button>
+    ))}
+</div>
           <a
             href={whatsappLink(msg)}
             target="_blank"

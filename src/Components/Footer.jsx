@@ -13,8 +13,8 @@ const branches = [
     mapLink: "https://maps.google.com",
   },
   {
-    name: "Aruku Branch",
-    address: "Aruku, Andhra Pradesh",
+    name: " Seethammadara Branch",
+    address: "First Floor, 49-53-10/1 4th Town Road, Balayya Sastri Layout, Seethammadara, Visakhapatnam, Andhra Pradesh 530013",
     timings: "Mon – Sun: 9:00 AM – 9:00 PM",
     phone: "+91 9550972999",
     mapLink: "https://maps.google.com",
